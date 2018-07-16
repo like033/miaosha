@@ -13,11 +13,11 @@ https://docs.spring.io/spring-boot/docs/1.5.8.RELEASE/reference/htmlsingle/
     </dependency>
 </dependencies>
 
-3.ĞŞ¸Äpom£¬Ìí¼ÓÒÀÀµ
+3.ä¿®æ”¹pomï¼Œæ·»åŠ ä¾èµ–
 
-4.½¨Á¢Ä¿Â¼½á¹¹£¬controller£¬service£¬dao
+4.å»ºç«‹ç›®å½•ç»“æ„ï¼Œcontrollerï¼Œserviceï¼Œdao
 
-5.´´½¨MainApplication DemoController
+5.åˆ›å»ºMainApplication DemoController
 @SpringBootApplication
 public class MainApplication {
 	
@@ -26,25 +26,25 @@ public class MainApplication {
 	    }
 }
 
-6. /hello/api ½Ó¿Ú
+6. /hello/api æ¥å£
 
-7.´´½¨Result
+7.åˆ›å»ºResult
 
-8.´´½¨CodeMsg
+8.åˆ›å»ºCodeMsg
 
-9.ä¯ÀÀ·ÃÎÊ http://localhost:8080/demo/hello/api
+9.æµè§ˆè®¿é—® http://localhost:8080/demo/hello/api
 
-10.¿´ÎÄµµ£¬¼¯³Éthymeleaf
+10.çœ‹æ–‡æ¡£ï¼Œé›†æˆthymeleaf
 <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-thymeleaf</artifactId>
 </dependency>
- Ìí¼ÓÅäÖÃapplication.properties
+ æ·»åŠ é…ç½®application.properties
 spring.thymeleaf.prefix=classpath:/templates/
 spring.thymeleaf.suffix=.html
-×¢ÒâºóÃæ²»ÄÜÓë¿Õ¸ñ ·ñÔò»áÕÒ²»µ½Ä£°å
+æ³¨æ„åé¢ä¸èƒ½ä¸ç©ºæ ¼ å¦åˆ™ä¼šæ‰¾ä¸åˆ°æ¨¡æ¿
 
-11./hello½Ó¿Ú  template/hello.html
+11./helloæ¥å£  template/hello.html
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -56,9 +56,9 @@ spring.thymeleaf.suffix=.html
 </body>
 </html>
 
-12.¼¯³Émybatis
+12.é›†æˆmybatis
 http://www.mybatis.org/spring-boot-starter/mybatis-spring-boot-autoconfigure/
-Ìí¼ÓÒÀÀµ£º
+æ·»åŠ ä¾èµ–ï¼š
 <dependency>
 	<groupId>org.mybatis.spring.boot</groupId>
 	<artifactId>mybatis-spring-boot-starter</artifactId>
@@ -74,7 +74,7 @@ http://www.mybatis.org/spring-boot-starter/mybatis-spring-boot-autoconfigure/
 	<version>1.0.5</version>
 </dependency>
 
-Ìí¼ÓÊı¾İÔ´ÅäÖÃdruid
+æ·»åŠ æ•°æ®æºé…ç½®druid
 #mybatis
 mybatis.type-aliases-package=com.imooc.miaosha.domain
 mybatis.mapperLocations = classpath:com/imooc/miaosha/dao/*.xml
@@ -100,7 +100,7 @@ spring.datasource.testOnReturn=false
 spring.datasource.poolPreparedStatements=true
 spring.datasource.maxOpenPreparedStatements=20
 
-Ìí¼Óconfig£º
+æ·»åŠ configï¼š
 public class DruidConfig {
 	private String url;
 	private String username;
@@ -161,16 +161,16 @@ public ServletRegistrationBean druidStatServlet() {
 	return reg;
 }
 
-Ìí¼Ómysql-connctor¡¢druidÒÀÀµ
+æ·»åŠ mysql-connctorã€druidä¾èµ–
 
-´´½¨Êı¾İ±íUser£¬Service¡¢Dao¡¢Domain
+åˆ›å»ºæ•°æ®è¡¨Userï¼ŒServiceã€Daoã€Domain
 CREATE TABLE `user` (
   `id` int(11) NOT NULL,
   `name` varchar(24) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
 
-@Select×¢½â
+@Selectæ³¨è§£
 
 xml:
 <!DOCTYPE mapper
@@ -179,27 +179,27 @@ xml:
 <mapper namespace="com.imooc.miaosha.dao.UserDao">
 </mapper>
 
-£¨1£©getById
-£¨2£©tx @Transactional ÑİÊ¾
+ï¼ˆ1ï¼‰getById
+ï¼ˆ2ï¼‰tx @Transactional æ¼”ç¤º
 
-13.ÕûºÏredis
-£¨1£©°²×°redis
-ÏÂÔØredis°²×°ÎÄ¼ş http://redis.io/ redis-4.0.2.tar.gz
+13.æ•´åˆredis
+ï¼ˆ1ï¼‰å®‰è£…redis
+ä¸‹è½½rediså®‰è£…æ–‡ä»¶ http://redis.io/ redis-4.0.2.tar.gz
 tar -zvxf redis-4.0.2.tar.gz
 cd redis-4.0.2
 make 
 make install
-src/redis-server & //Æô¶¯·şÎñÆ÷
-src/redis-cli //¿Í»§¶ËÁ¬½Ó
-util/install_server.sh °²×°³ÉÏµÍ³·şÎñ
-chkconfig ¨C-list | grep redis ²é¿´ÊÇ·ñ¿ª»úÆô¶¯
-(2)ÅäÖÃ
+src/redis-server & //å¯åŠ¨æœåŠ¡å™¨
+src/redis-cli //å®¢æˆ·ç«¯è¿æ¥
+util/install_server.sh å®‰è£…æˆç³»ç»ŸæœåŠ¡
+chkconfig â€“-list | grep redis æŸ¥çœ‹æ˜¯å¦å¼€æœºå¯åŠ¨
+(2)é…ç½®
 daemonize 
 bind 
 requirepass
 
-Ìí¼ÓÅäÖÃ
-ÒıÈëjedisºÍfastjsonÒÀÀµ
+æ·»åŠ é…ç½®
+å¼•å…¥jediså’Œfastjsonä¾èµ–
 <dependency>
     <groupId>redis.clients</groupId>
     <artifactId>jedis</artifactId>
@@ -209,7 +209,7 @@ requirepass
     <artifactId>fastjson</artifactId>
     <version>1.2.38</version>
 </dependency>
-Ìí¼ÓÅäÖÃ£º
+æ·»åŠ é…ç½®ï¼š
 #redis
 redis.host=10.110.3.62
 redis.port=6379
@@ -218,17 +218,17 @@ redis.password=123456
 redis.poolMaxTotal=10
 redis.poolMaxIdle=10
 redis.poolMaxWait=3
-java£º
+javaï¼š
 @ConfigurationProperties(prefix="redis")
 @Component
 public class RedisConfig {
 	private String host;
 	private int port;
-	private int timeout;//Ãë
+	private int timeout;//ç§’
 	private String password;
 	private int poolMaxTotal;
 	private int poolMaxIdle;
-	private int poolMaxWait;//Ãë
+	private int poolMaxWait;//ç§’
 }
-±àĞ´RedisSerive KeyPrefix BaseKey
+ç¼–å†™RedisSerive KeyPrefix BaseKey
 
