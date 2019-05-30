@@ -13,8 +13,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.thymeleaf.spring4.context.SpringWebContext;
-import org.thymeleaf.spring4.view.ThymeleafViewResolver;
+import org.thymeleaf.context.WebContext;
+import org.thymeleaf.spring5.view.ThymeleafViewResolver;
 
 import com.imooc.miaosha.domain.MiaoshaUser;
 import com.imooc.miaosha.redis.GoodsKey;
@@ -91,9 +91,8 @@ public class GoodsController extends BaseController {
     	model.addAttribute("miaoshaStatus", miaoshaStatus);
     	model.addAttribute("remainSeconds", remainSeconds);
 //        return "goods_detail";
-    	
-    	SpringWebContext ctx = new SpringWebContext(request,response,
-    			request.getServletContext(),request.getLocale(), model.asMap(), applicationContext );
+    	WebContext ctx = new WebContext(request,response,
+    			request.getServletContext(),request.getLocale(), model.asMap());
     	html = thymeleafViewResolver.getTemplateEngine().process("goods_detail", ctx);
     	if(!StringUtils.isEmpty(html)) {
     		redisService.set(GoodsKey.getGoodsDetail, ""+goodsId, html);
