@@ -49,6 +49,9 @@ public class MiaoshaService {
 	}
 
 	public long getMiaoshaResult(Long userId, long goodsId) {
+		if(MiaoshaController.isGlobalActivityOver()){
+    		return -1;
+    	}
 		MiaoshaOrder order = orderService.getMiaoshaOrderByUserIdGoodsId(userId, goodsId);
 		if(order != null) {//秒杀成功
 			return order.getOrderId();
