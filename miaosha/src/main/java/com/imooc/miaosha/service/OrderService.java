@@ -1,6 +1,7 @@
 package com.imooc.miaosha.service;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -55,6 +56,10 @@ public class OrderService {
 		redisService.set(OrderKey.getMiaoshaOrderByUidGid, ""+user.getId()+"_"+goods.getId(), miaoshaOrder);
 		 
 		return orderInfo;
+	}
+
+	public List<MiaoshaOrder> getAllMiaoshaOrdersByGoodsId(long goodsId) {
+		return orderDao.listByGoodsId(goodsId);
 	}
 
 	public void deleteOrders() {

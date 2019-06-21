@@ -58,6 +58,7 @@ public class MiaoshaController implements InitializingBean {
 	@Autowired
 	MQSender sender;
 	
+	private static HashMap<Long, Integer> stockMap =  new HashMap<Long, Integer>();
 	private HashMap<Long, Boolean> localOverMap =  new HashMap<Long, Boolean>();
 	
 	/**
@@ -70,8 +71,18 @@ public class MiaoshaController implements InitializingBean {
 		}
 		for(GoodsVo goods : goodsList) {
 			redisService.set(GoodsKey.getMiaoshaGoodsStock, ""+goods.getId(), goods.getStockCount());
+			stockMap.put(goods.getId(), goods.getStockCount());
 			localOverMap.put(goods.getId(), false);
 		}
+	}
+	
+	/**获取初始的商品秒杀数量*/
+	public static int getGoodsStockOriginal(long goodsId) {
+		Integer stock = stockMap.get(goodsId);
+		if(stock == null) {
+			return 0;
+		}
+		return stock;
 	}
 	
 	@RequestMapping(value="/reset", method=RequestMethod.GET)

@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.imooc.miaosha.controller.MiaoshaController;
 import com.imooc.miaosha.domain.MiaoshaOrder;
 import com.imooc.miaosha.domain.MiaoshaUser;
 import com.imooc.miaosha.domain.OrderInfo;
@@ -40,7 +41,6 @@ public class MiaoshaService {
 		//减库存 下订单 写入秒杀订单
 		boolean success = goodsService.reduceStock(goods);
 		if(success) {
-			//order_info maiosha_order
 			return orderService.createOrder(user, goods);
 		}else {
 			setGoodsOver(goods.getId());
@@ -54,12 +54,37 @@ public class MiaoshaService {
 			return order.getOrderId();
 		}else {
 			boolean isOver = getGoodsOver(goodsId);
-			if(isOver) {
-				return -1;
-			}else {
+			if(isOver) {//此商品的秒杀已经结束，但是可能订单还在生成中
+				//获取所有的秒杀订单
+				List<MiaoshaOrder> orders = orderService.getAllMiaoshaOrdersByGoodsId(goodsId);
+				//如果订单数量已经大于了活动开始时候的秒杀商品的数量
+				if(orders != null && orders.size() >= MiaoshaController.getGoodsStockOriginal(goodsId)) {
+					//判断是否有此用户的订单
+					MiaoshaOrder o = get(orders, userId);
+					if(o != null) {//如果有，则说明秒杀成功
+						return o.getOrderId();
+					}else {//秒杀失败
+						return -1;
+					}
+				}else {//订单还在生成中
+					return 0;
+				}
+			}else {//此商品的秒杀还没结束，返回处理中
 				return 0;
 			}
 		}
+	}
+	
+	private MiaoshaOrder get(List<MiaoshaOrder> orders, Long userId) {
+		if(orders == null || orders.size() <= 0) {
+			return null;
+		}
+		for(MiaoshaOrder order : orders) {
+			if(order.getUserId().equals(userId)) {
+				return order;
+			}
+		}
+		return null;
 	}
 
 	private void setGoodsOver(Long goodsId) {

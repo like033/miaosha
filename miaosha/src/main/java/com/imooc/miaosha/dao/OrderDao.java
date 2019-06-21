@@ -1,5 +1,7 @@
 package com.imooc.miaosha.dao;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
@@ -32,6 +34,9 @@ public interface OrderDao {
 
 	@Delete("delete from miaosha_order")
 	public void deleteMiaoshaOrders();
+
+	@Select("select * from miaosha_order where goods_id=#{goodsId}")
+	public List<MiaoshaOrder> listByGoodsId(@Param("goodsId") long goodsId);
 
 	
 }
