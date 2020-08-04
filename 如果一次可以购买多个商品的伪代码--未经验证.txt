@@ -1,0 +1,44 @@
+
+用户在页面传递：
+user_id 、goods_id 、amout（本次要购买的数量）
+
+预减的逻辑：
+（1）初始化redis中的数量 == 库存数量
+（2）收到请求，不管用户在前端传递想购买多少，redis统一减1
+（3）redis减到0就直接返回结束
+（4）redis没有减到0，则进入消息队列
+
+消息队列出队下单的逻辑：
+//开启事务
+transaction.start();
+try{	
+	//先查库存，加锁
+	select stock from goods  where goods_id= #{goodsId} for update
+	if(stock < amout){
+		return "库存不足";
+	}
+	//查询用户已经买到的商品的数量
+	int sumGoodsCount = select sum(goodsCount) from miaosha_order where user_id = #{userId} and goods_id = #{goodsId} ;
+	if(sumGoodsCount >= 2){
+		return "超过最大数";
+	}
+	//用户还能购买的数量
+	int availbaleCount = Math.min(2-sumGoodsCount,  amount)；
+	//修改商品表的库存
+	update goods set stock = stock - availbaleCount;
+	//生成订单
+	insert into miaosha_order（user_id, goods_id, availbaleCount);
+	//事务提交
+	transaction.commit();
+}catch(Exception e){
+	//事务回滚
+	transaction.rollback();
+}
+
+表结构改造：
+（1）miaosha_order中要冗余一下order中购买的商品数量。
+（2）miaosha_order中的唯一索引 (user_id, goods_id) 去掉，换成普通索引。
+
+
+
+
