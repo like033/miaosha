@@ -58,10 +58,6 @@ public class OrderService {
 		return orderInfo;
 	}
 
-	public List<MiaoshaOrder> getAllMiaoshaOrdersByGoodsId(long goodsId) {
-		return orderDao.listByGoodsId(goodsId);
-	}
-
 	public void deleteOrders() {
 		orderDao.deleteOrders();
 		orderDao.deleteMiaoshaOrders();

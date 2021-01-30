@@ -59,7 +59,6 @@ public class MiaoshaController implements InitializingBean {
 	MQSender sender;
 	
 	private static volatile boolean isGlobalActivityOver = false;
-	private static HashMap<Long, Integer> stockMap =  new HashMap<Long, Integer>();
 	private HashMap<Long, Boolean> localOverMap =  new HashMap<Long, Boolean>();
 	
 	/**
@@ -72,20 +71,10 @@ public class MiaoshaController implements InitializingBean {
 		}
 		for(GoodsVo goods : goodsList) {
 			redisService.set(GoodsKey.getMiaoshaGoodsStock, ""+goods.getId(), goods.getStockCount());
-			stockMap.put(goods.getId(), goods.getStockCount());
 			localOverMap.put(goods.getId(), false);
 		}
 	}
-	
-	/**获取初始的商品秒杀数量*/
-	public static int getGoodsStockOriginal(long goodsId) {
-		Integer stock = stockMap.get(goodsId);
-		if(stock == null) {
-			return 0;
-		}
-		return stock;
-	}
-	
+
 	/**通过管理后台设置一个全局秒杀结束的标志，防止数据库、redis、rabbitmq等发生意外，活动无法结束**/
 	public static void setGlobalActivityOver() {
 		isGlobalActivityOver = true;

@@ -57,35 +57,12 @@ public class MiaoshaService {
 			return order.getOrderId();
 		}else {
 			boolean isOver = getGoodsOver(goodsId);
-			if(!isOver) {//此商品的秒杀还没结束，返回处理中
+			if(isOver) {//此商品的秒杀已经结束
+				return -1;
+			}else {
 				return 0;
-			}else {//此商品的秒杀已经结束，但是可能订单还在生成中
-				//获取所有的秒杀订单, 判断订单数量和参与秒杀的商品数量
-				List<MiaoshaOrder> orders = orderService.getAllMiaoshaOrdersByGoodsId(goodsId);
-				if(orders == null || orders.size() < MiaoshaController.getGoodsStockOriginal(goodsId)){
-					return 0;//订单还在生成中
-				}else {//判断是否有此用户的订单
-					MiaoshaOrder o = get(orders, userId);
-					if(o != null) {//如果有，则说明秒杀成功
-						return o.getOrderId();
-					}else {//秒杀失败
-						return -1;
-					}
-				}
 			}
 		}
-	}
-	
-	private MiaoshaOrder get(List<MiaoshaOrder> orders, Long userId) {
-		if(orders == null || orders.size() <= 0) {
-			return null;
-		}
-		for(MiaoshaOrder order : orders) {
-			if(order.getUserId().equals(userId)) {
-				return order;
-			}
-		}
-		return null;
 	}
 
 	private void setGoodsOver(Long goodsId) {
